@@ -1,0 +1,29 @@
+version: '3.9'
+
+services:
+  backend:
+    build: ./backend
+    ports:
+      - "8081:8081"
+    environment:
+      - MONGODB_URI=mongodb://mongo:27017/chatapp
+      - JWT_SECRET=byk8+LZ7wTCyJg3Y5zU8fTgybO9iH8j/AJQdKh75zH1Rde//XEOqq8Yss24VX6aCWZu/1fO2LSmeIkBK2o8rXg==
+    depends_on:
+      - mongo
+
+  mongo:
+    image: mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+  frontend:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+    volumes:
+      - ./frontend:/usr/share/nginx/html:ro
+
+volumes:
+  mongo_data:
